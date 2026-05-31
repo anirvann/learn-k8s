@@ -43,6 +43,12 @@ help:
 	@printf "  $(CYAN)install-helm$(RESET)      Install Helm\n"
 	@printf "  $(CYAN)install-extras$(RESET)    Install k9s, kubectx, kubens\n"
 	@printf "  $(CYAN)verify$(RESET)            Verify installed tools and print versions\n"
+	@printf "  $(CYAN)nginx-pod$(RESET)         Apply the standalone nginx Pod example\n"
+	@printf "  $(CYAN)nginx-deployment$(RESET)  Apply the nginx Deployment example\n"
+	@printf "  $(CYAN)nginx-app$(RESET)         Apply the full nginx application example\n"
+	@printf "  $(CYAN)nginx-status$(RESET)      Show nginx resources across namespaces\n"
+	@printf "  $(CYAN)nginx-port-forward$(RESET) Forward localhost:8080 to the nginx Service\n"
+	@printf "  $(CYAN)nginx-clean$(RESET)       Delete nginx learning resources\n"
 	@printf "  $(CYAN)help$(RESET)              Show this message\n\n"
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -182,3 +188,40 @@ verify:
 	@printf "\n"
 	@printf "$(BOLD)Note:$(RESET) Start Rancher Desktop and enable 'dockerd (moby)' in Preferences → Container Engine\n"
 	@printf "      to make the 'docker' CLI available. Kubernetes (k3s) starts automatically.\n\n"
+
+# ─────────────────────────────────────────────────────────────────────────────
+.PHONY: nginx-pod
+nginx-pod:
+	$(call log,Applying standalone nginx Pod …)
+	@kubectl apply -f examples/nginx/01-pod.yaml
+	$(call ok,nginx Pod applied)
+
+.PHONY: nginx-deployment
+nginx-deployment:
+	$(call log,Applying nginx Deployment …)
+	@kubectl apply -f examples/nginx/02-deployment.yaml
+	$(call ok,nginx Deployment applied)
+
+.PHONY: nginx-app
+nginx-app:
+	$(call log,Applying full nginx application …)
+	@kubectl apply -f examples/nginx/03-application.yaml
+	$(call ok,nginx application applied)
+
+.PHONY: nginx-status
+nginx-status:
+	$(call log,Showing nginx resources …)
+	@kubectl get pods,deployments,services -A -l app=nginx
+
+.PHONY: nginx-port-forward
+nginx-port-forward:
+	$(call log,Forwarding http://localhost:8080 to service/nginx-app …)
+	@kubectl -n learn-nginx port-forward service/nginx-app 8080:80
+
+.PHONY: nginx-clean
+nginx-clean:
+	$(call log,Deleting nginx learning resources …)
+	@kubectl delete -f examples/nginx/03-application.yaml --ignore-not-found=true
+	@kubectl delete -f examples/nginx/02-deployment.yaml --ignore-not-found=true
+	@kubectl delete -f examples/nginx/01-pod.yaml --ignore-not-found=true
+	$(call ok,nginx learning resources deleted)
