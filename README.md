@@ -56,3 +56,8 @@ make nginx-clean
 The "Application" step is not a special Kubernetes resource in this example.
 It is the practical unit users interact with: a Deployment for running Pods plus
 a Service for stable network access.
+
+## Docs
+
+- [Nginx Kubernetes workflow](docs/nginx-workflow.md)
+- [ConfigMaps and manifest structure](docs/configmap-and-manifests.md)
