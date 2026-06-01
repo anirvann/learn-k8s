@@ -61,3 +61,4 @@ a Service for stable network access.
 
 - [Nginx Kubernetes workflow](docs/nginx-workflow.md)
 - [ConfigMaps and manifest structure](docs/configmap-and-manifests.md)
+- [Kubernetes Service types](docs/service-types.md)

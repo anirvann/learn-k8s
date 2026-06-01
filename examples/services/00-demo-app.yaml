@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: service-types-demo
+  labels:
+    app: service-types-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-web
+  namespace: service-types-demo
+  labels:
+    app: nginx
+    component: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+      component: web
+  template:
+    metadata:
+      labels:
+        app: nginx
+        component: web
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
