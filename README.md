@@ -61,3 +61,4 @@ a Service for stable network access.
 
 - [Nginx Kubernetes workflow](docs/nginx-workflow.md)
 - [ConfigMaps and manifest structure](docs/configmap-and-manifests.md)
+- [Maps in transport & food-delivery apps](docs/maps/README.md) — location tracking, spatial databases, real-time updates, and map maintenance
