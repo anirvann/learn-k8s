@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-clusterip
+  namespace: service-types-demo
+  labels:
+    app: nginx
+    component: web
+    service-type: clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx
+    component: web
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
